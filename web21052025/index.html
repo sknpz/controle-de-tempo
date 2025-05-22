@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Tempo</title>
+</head>
+<body>
+    <h1>Agora são exatamente:</h1>
+    <h2 id="relogio"></h2>
+    <script>
+        function atualizarRelogio() {
+            const agora = new Date();
+            const horas = agora.getHours().toString().padStart(2, '0');
+            const minutos = agora.getMinutes().toString().padStart(2, '0');
+            const segundos = agora.getSeconds().toString().padStart(2, '0');
+            document.getElementById("relogio").innerText = `${horas}:${minutos}:${segundos}`;
+        }
+        setInterval(atualizarRelogio, 1000);
+        atualizarRelogio();
+    </script>
+    <hr>
+    <h2 id="cronometro">00:00:00</h2>
+    <div>
+        <button onclick="iniciar()" id="btIniciar" class="button">Iniciar</button>
+        <button onclick="pausar()" id="btPausar" class="button">Pausar</button>
+        <button onclick="zerar()" id="btZerar" class="button">Zerar</button>
+    </div>
+    
+    <script>
+        let segundos = 0;
+        let intervalo;
+
+        function formatarTime(segundos) {
+            const h = String(Math.floor(segundos / 3600)).padStart(2, '0');
+            const m = String(Math.floor((segundos % 3600) / 60)).padStart(2, '0');
+            const s = String(segundos % 60).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function atualizarCronometro() {
+            document.getElementById("cronometro").innerText = formatarTime(segundos);
+        }
+
+        function iniciar() {
+            if (!intervalo) {
+                intervalo = setInterval(() => {
+                    segundos++;
+                    atualizarCronometro();
+                }, 1000);
+            }
+        }
+
+        function pausar() {
+            if(intervalo){
+                clearInterval(intervalo);
+                intervalo = null;
+            }
+        }
+
+        function zerar() {
+            clearInterval(intervalo);
+            intervalo = null;
+            segundos = 0;
+            atualizarCronometro();
+        }
+    
+    </script>
+</body>
+</html>
